@@ -40,7 +40,7 @@ class ViewController: UIViewController {
                     toItem: titleLabel.superview!,
                     attribute: .CenterX,
                     multiplier: isMenuOpen ? 0.25 : 1,
-                    constant: isMenuOpen ? 20 : 0)
+                    constant: isMenuOpen ? 40 : 0)
                 
                 newConstraint.identifier = "TitleCenterX"
                 
@@ -58,7 +58,7 @@ class ViewController: UIViewController {
                     relatedBy: .Equal,
                     toItem: titleLabel.superview!,
                     attribute: .CenterY,
-                    multiplier: isMenuOpen ? 0.67 : 1.0,
+                    multiplier: isMenuOpen ? 0.67 : 1,
                     constant: 5)
                 
                 newConstraint.identifier = "TitleCenterY"
@@ -68,17 +68,23 @@ class ViewController: UIViewController {
             
         }
         
-        UIView.animateWithDuration(0.33, delay: 0, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(1.2, delay: 0,
+                                   
+            usingSpringWithDamping: 0.4, initialSpringVelocity: 5.0,
+            
+            options: .CurveEaseOut, animations: {
             
             let angle = self.isMenuOpen ? CGFloat(M_PI_4) : 0
             
             self.buttonMenu.transform = CGAffineTransformMakeRotation(angle)
             
-            self.slider.alpha = self.isMenuOpen ? 1 : 0
-            
             self.view.layoutIfNeeded()
             
             }, completion: nil)
+        
+        UIView.animateWithDuration(1.2){
+            self.slider.alpha = self.isMenuOpen ? 1 : 0
+        }
         
     }
     
@@ -86,7 +92,13 @@ class ViewController: UIViewController {
         
         if (view.subviews.last?.isKindOfClass(UIImageView))!
         {
-            view.subviews.last?.removeFromSuperview()
+            UIView.transitionWithView(view.subviews.last!, duration: 1,
+                                     
+                options: [.TransitionFlipFromBottom]
+                
+                , animations: {
+                    self.view.subviews.last!.removeFromSuperview()
+                }, completion: nil)
         }
         
         //show the selected image
@@ -96,9 +108,10 @@ class ViewController: UIViewController {
                                             blue: 0.0, alpha: 0.5)
         imageView.layer.cornerRadius = 5.0
         imageView.layer.masksToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
+    
         view.addSubview(imageView)
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         
         let conX = imageView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor)
         let conBottom = imageView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor, constant: imageView.frame.height)
@@ -111,23 +124,40 @@ class ViewController: UIViewController {
         
         conBottom.constant = -imageView.frame.size.height/2
         conWidth.constant = 0.0
-        UIView.animateWithDuration(0.33, delay: 0.0, options: [.CurveEaseOut], animations: {
-            self.view.layoutIfNeeded()
+        UIView.animateWithDuration(0.33, delay: 0.0,
+            
+            usingSpringWithDamping: 0.8, initialSpringVelocity: 10.0,
+                                   
+            options: [.CurveEaseOut], animations: {
+                self.view.layoutIfNeeded()
             }, completion: nil)
         
-        UIView.animateWithDuration(0.67, delay: 2.0, options: [], animations: {
-            conBottom.constant = imageView.frame.size.height
-            conWidth.constant = -50.0
-            self.view.layoutIfNeeded()
-        }) { (_) in
-            imageView.removeFromSuperview()
+        delay(seconds: 2.0){
+            UIView.transitionWithView(imageView, duration: 1,
+                options: [.TransitionFlipFromBottom]
+                , animations: { 
+                    imageView.hidden = true
+            }){
+                (_) in
+                imageView.reloadInputViews()
+            }
         }
     }
     
     func transitionCloseMenu(item: UIView) {
         //close the menu with a cool transition
-        self.actionToggleMenu(self)
+        delay(seconds: 0.35, completion: {
+            self.actionToggleMenu(self)
+        })
         
+        let titleBar = slider.superview!
+        
+        UIView.transitionWithView(titleBar,
+                                  duration: 0.5,
+                                  options: [.CurveEaseOut, .TransitionFlipFromBottom],
+                                  animations: {
+                                    self.slider.removeFromSuperview()
+            }, completion: {_ in titleBar.addSubview(self.slider) })
     }
 }
 
