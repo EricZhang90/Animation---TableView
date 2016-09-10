@@ -90,15 +90,20 @@ class ViewController: UIViewController {
     
     func showItem(index: Int) {
         
-        if (view.subviews.last?.isKindOfClass(UIImageView))!
+        let lastImageView = view.subviews.last!
+        
+        if lastImageView.isKindOfClass(UIImageView)
         {
             UIView.transitionWithView(view.subviews.last!, duration: 1,
                                      
                 options: [.TransitionFlipFromBottom]
                 
                 , animations: {
-                    self.view.subviews.last!.removeFromSuperview()
-                }, completion: nil)
+                    lastImageView.hidden = true
+                }, completion: {
+                    (_) in
+                    lastImageView.removeFromSuperview()
+            })
         }
         
         //show the selected image
