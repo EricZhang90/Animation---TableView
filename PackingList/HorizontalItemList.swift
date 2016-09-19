@@ -6,7 +6,7 @@ import UIKit
 //
 class HorizontalItemList: UIScrollView {
   
-  var didSelectItem: ((item: UIView)->())?
+  var didSelectItem: ((_ item: UIView)->())?
   
   let buttonWidth: CGFloat = 60.0
   let padding: CGFloat = 10.0
@@ -20,7 +20,7 @@ class HorizontalItemList: UIScrollView {
       let imageView  = UIImageView(image: image)
       imageView.center = CGPoint(x: CGFloat(i) * buttonWidth + buttonWidth/2, y: buttonWidth/2)
       imageView.tag = i
-      imageView.userInteractionEnabled = true
+      imageView.isUserInteractionEnabled = true
       addSubview(imageView)
       
       let tap = UITapGestureRecognizer(target: self, action: #selector(HorizontalItemList.didTapImage(_:)))
@@ -30,7 +30,7 @@ class HorizontalItemList: UIScrollView {
     contentSize = CGSize(width: padding * buttonWidth, height:  buttonWidth + 2*padding)
   }
   
-  func didTapImage(tap: UITapGestureRecognizer) {
-    didSelectItem?(item: tap.view!)
+  func didTapImage(_ tap: UITapGestureRecognizer) {
+    didSelectItem?(tap.view!)
   }  
 }

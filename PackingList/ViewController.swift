@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     
     //MARK: class methods
     
-    @IBAction func actionToggleMenu(sender: AnyObject) {
+    @IBAction func actionToggleMenu(_ sender: AnyObject) {
         isMenuOpen = !isMenuOpen
         
         menuHeightConstraint.constant = isMenuOpen ? 200.0 : 60.0
@@ -31,75 +31,75 @@ class ViewController: UIViewController {
         {
             if constraint.identifier == "TitleCenterX"
             {
-                constraint.active = false
+                constraint.isActive = false
                 
                 let newConstraint = NSLayoutConstraint(
                     item: titleLabel,
-                    attribute: .CenterX,
-                    relatedBy: .Equal,
+                    attribute: .centerX,
+                    relatedBy: .equal,
                     toItem: titleLabel.superview!,
-                    attribute: .CenterX,
+                    attribute: .centerX,
                     multiplier: isMenuOpen ? 0.25 : 1,
                     constant: isMenuOpen ? 40 : 0)
                 
                 newConstraint.identifier = "TitleCenterX"
                 
-                newConstraint.active = true
+                newConstraint.isActive = true
                 
                 //constraint.constant = isMenuOpen ? -100.0 : 0.0
             }
             else if constraint.identifier == "TitleCenterY"
             {
-                constraint.active = false
+                constraint.isActive = false
                 
                 let newConstraint = NSLayoutConstraint(
                     item: titleLabel,
-                    attribute: .CenterY,
-                    relatedBy: .Equal,
+                    attribute: .centerY,
+                    relatedBy: .equal,
                     toItem: titleLabel.superview!,
-                    attribute: .CenterY,
+                    attribute: .centerY,
                     multiplier: isMenuOpen ? 0.67 : 1,
                     constant: 5)
                 
                 newConstraint.identifier = "TitleCenterY"
                 
-                newConstraint.active = true
+                newConstraint.isActive = true
             }
             
         }
         
-        UIView.animateWithDuration(1.2, delay: 0,
+        UIView.animate(withDuration: 1.2, delay: 0,
                                    
             usingSpringWithDamping: 0.4, initialSpringVelocity: 5.0,
             
-            options: .CurveEaseOut, animations: {
+            options: .curveEaseOut, animations: {
             
             let angle = self.isMenuOpen ? CGFloat(M_PI_4) : 0
             
-            self.buttonMenu.transform = CGAffineTransformMakeRotation(angle)
+            self.buttonMenu.transform = CGAffineTransform(rotationAngle: angle)
             
             self.view.layoutIfNeeded()
             
             }, completion: nil)
         
-        UIView.animateWithDuration(1.2){
+        UIView.animate(withDuration: 1.2, animations: {
             self.slider.alpha = self.isMenuOpen ? 1 : 0
-        }
+        })
         
     }
     
-    func showItem(index: Int) {
+    func showItem(_ index: Int) {
         
         let lastImageView = view.subviews.last!
         
-        if lastImageView.isKindOfClass(UIImageView)
+        if lastImageView.isKind(of: UIImageView.self)
         {
-            UIView.transitionWithView(view.subviews.last!, duration: 1,
+            UIView.transition(with: view.subviews.last!, duration: 1,
                                      
-                options: [.TransitionFlipFromBottom]
+                options: [.transitionFlipFromBottom]
                 
                 , animations: {
-                    lastImageView.hidden = true
+                    lastImageView.isHidden = true
                 }, completion: {
                     (_) in
                     lastImageView.removeFromSuperview()
@@ -110,7 +110,7 @@ class ViewController: UIViewController {
         let imageView  = UIImageView(image:
             UIImage(named: "summericons_100px_0\(index).png"))
         imageView.backgroundColor = UIColor(red: 0.0, green: 0.0,
-                                            blue: 0.0, alpha: 0.5)
+                                            blue: 0.0, alpha: 0.4)
         imageView.layer.cornerRadius = 5.0
         imageView.layer.masksToBounds = true
     
@@ -118,30 +118,30 @@ class ViewController: UIViewController {
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
-        let conX = imageView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor)
-        let conBottom = imageView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor, constant: imageView.frame.height)
-        let conWidth = imageView.widthAnchor.constraintEqualToAnchor(view.widthAnchor, multiplier: 0.33, constant: -50.0)
-        let conHeight = imageView.heightAnchor.constraintEqualToAnchor(imageView.widthAnchor)
+        let conX = imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        let conBottom = imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: imageView.frame.height)
+        let conWidth = imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.33, constant: -50.0)
+        let conHeight = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
         
-        NSLayoutConstraint.activateConstraints([conX, conBottom, conWidth, conHeight])
+        NSLayoutConstraint.activate([conX, conBottom, conWidth, conHeight])
         
         view.layoutIfNeeded()
         
         conBottom.constant = -imageView.frame.size.height/2
         conWidth.constant = 0.0
-        UIView.animateWithDuration(0.33, delay: 0.0,
+        UIView.animate(withDuration: 0.33, delay: 0.0,
             
             usingSpringWithDamping: 0.8, initialSpringVelocity: 10.0,
                                    
-            options: [.CurveEaseOut], animations: {
+            options: [.curveEaseOut], animations: {
                 self.view.layoutIfNeeded()
             }, completion: nil)
         
-        delay(seconds: 2.0){
-            UIView.transitionWithView(imageView, duration: 1,
-                options: [.TransitionFlipFromBottom]
+        delay(seconds: 1.5){
+            UIView.transition(with: imageView, duration: 1,
+                options: [.transitionFlipFromBottom]
                 , animations: { 
-                    imageView.hidden = true
+                    imageView.isHidden = true
             }){
                 (_) in
                 imageView.reloadInputViews()
@@ -149,7 +149,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func transitionCloseMenu(item: UIView) {
+    func transitionCloseMenu(_ item: UIView) {
         //close the menu with a cool transition
         delay(seconds: 0.35, completion: {
             self.actionToggleMenu(self)
@@ -157,9 +157,9 @@ class ViewController: UIViewController {
         
         let titleBar = slider.superview!
         
-        UIView.transitionWithView(titleBar,
+        UIView.transition(with: titleBar,
                                   duration: 0.5,
-                                  options: [.CurveEaseOut, .TransitionFlipFromBottom],
+                                  options: [.curveEaseOut, .transitionFlipFromBottom],
                                   animations: {
                                     self.slider.removeFromSuperview()
             }, completion: {_ in titleBar.addSubview(self.slider) })
@@ -195,24 +195,24 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: Table View methods
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        cell.accessoryType = .None
-        cell.textLabel?.text = itemTitles[items[indexPath.row]]
-        cell.imageView?.image = UIImage(named: "summericons_100px_0\(items[indexPath.row]).png")
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell
+        cell.accessoryType = .none
+        cell.textLabel?.text = itemTitles[items[(indexPath as NSIndexPath).row]]
+        cell.imageView?.image = UIImage(named: "summericons_100px_0\(items[(indexPath as NSIndexPath).row]).png")
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        showItem(items[indexPath.row])
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        showItem(items[(indexPath as NSIndexPath).row])
     }
 }
