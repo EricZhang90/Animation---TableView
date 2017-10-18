@@ -74,7 +74,7 @@ class ViewController: UIViewController {
             
             options: .curveEaseOut, animations: {
             
-            let angle = self.isMenuOpen ? CGFloat(M_PI_4) : 0
+            let angle = self.isMenuOpen ? CGFloat(Double.pi / 4) : 0
             
             self.buttonMenu.transform = CGAffineTransform(rotationAngle: angle)
             
@@ -89,12 +89,11 @@ class ViewController: UIViewController {
     }
     
     func showItem(_ index: Int) {
-        
-        let lastImageView = view.subviews.last!
-        
-        if lastImageView.isKind(of: UIImageView.self)
+
+        // hide previous image
+        if let lastImageView = view.subviews.last,  lastImageView.isKind(of: UIImageView.self)
         {
-            UIView.transition(with: view.subviews.last!, duration: 1,
+            UIView.transition(with: lastImageView, duration: 0.75,
                                      
                 options: [.transitionFlipFromBottom]
                 
