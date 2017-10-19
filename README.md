@@ -18,7 +18,7 @@
 |                  |                  |                  |                       |
 | ---------------  |:----------------:|:----------------:| :--------------------:|
 | Type             | Snowing          |                  |           |
-| gif  | | | |
+| gif  |![](https://github.com/EricZhang90/iOS-Animation/blob/master/EmitterLayer_and_UIView/snowing.gif) | | |
 
 
 
