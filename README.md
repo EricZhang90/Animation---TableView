@@ -3,9 +3,9 @@
 # 1. Add items
 
 
-![](https://github.com/EricZhang90/Animation---TableView/blob/master/tableViewAni.gif) 
+![](https://github.com/EricZhang90/iOS-Animation/blob/master/TableView/tableViewAni.gif) 
 
 # 2. Select cells
 
 
-![](https://github.com/EricZhang90/Animation---TableView/blob/master/tableViewAni2.gif)
+![]https://github.com/EricZhang90/iOS-Animation/blob/master/TableView/tableViewAni2.gif)
