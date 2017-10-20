@@ -17,7 +17,7 @@
 
 |                  |                  |                  |                       |
 | ---------------  |:----------------:|:----------------:| :--------------------:|
-| Type             | Snowing          |                  |   Weather changing and plane taking off&landing         |
+| Type             | Snowing          |                  |   Weather changing and plane depart&landing         |
 | gif  |![](https://github.com/EricZhang90/iOS-Animation/blob/master/EmitterLayer_and_UIView/snowing.gif) | | ![](https://github.com/EricZhang90/iOS-Animation/blob/master/EmitterLayer_and_UIView/planeAnimation.gif) |
 
 
